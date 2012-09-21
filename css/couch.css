@@ -1,0 +1,128 @@
+
+/* couch */
+
+.c_view,
+.c_scene_wrap,
+.c_page{
+    width:320px;
+    height: 440px;
+}
+.c_page{
+    background-color: #f8f8f8;
+}
+
+.c_top_bar{
+    background-color: #d8d8d8;
+    height: 20px;
+    position: relative;
+    border-radius: 4px 4px 0 0;
+}
+
+.c_scene_wrap{
+    background-color: rgba(155, 0 , 153, .7);
+    position: relative;
+    overflow: hidden;
+}
+
+.c_scene_inner{
+    background-color: rgba(155, 200 , 53, .7);
+    position: absolute;
+    left:0;
+    width:100%;
+    height:100%;
+    top:0;
+}
+
+.c_view{
+    background-color:#f09;
+    background-color: rgba(255, 0 , 153, .7);
+    position: relative;
+}
+
+.c_view_segue{
+    position: absolute;
+    background-color:#f70;
+    background-color: rgba(255, 100 , 0, .7);
+    left:0;
+    top:0;
+}
+
+.c_view_hide{
+    display: none;
+}
+
+.c_view_push_R .c_view_segue{ left:-100%; top:0; }
+.c_view_push_L .c_view_segue{ left:100%;  top:0; }
+.c_view_push_T .c_view_segue{ left:0; top:100%; }
+.c_view_push_B .c_view_segue{ left:0; top:-100%; }
+
+.c_title{
+    height: 46px;
+    background-color: #f77;
+    position: relative;
+}
+.c_title .c_left{
+    position: absolute;
+    top:6px;
+    left:5px;
+}
+.c_title .c_right{
+    position: absolute;
+    top:6px;
+    right:5px;
+}
+.c_title .c_mid{
+    margin: 0 auto;
+    padding:0;
+    text-align: center;
+    width:60%;
+}
+.c_title .c_mid h2{
+    padding:0;
+    padding-top: 10px;
+    line-height: 24px;
+    font-size: 18px;
+    margin: 0;
+}
+
+
+
+.c_scene_title,
+.c_scene_title .c_title_inner{
+    position: absolute;
+    height: 46px;
+    width:100%;
+    top:0;
+    left:0;
+}
+
+.c_title_pushing{
+    z-index: 10;
+}
+.c_title_pushing .c_mid{
+    position: relative;
+}
+
+.c_btn{
+    display: inline-block;
+    height: 34px;
+    background-color: #e8e8e8;
+    line-height: 34px;
+    text-decoration: none;
+    padding: 0 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    color:#333;
+}
+
+
+@media screen and (max-width: 770px) {
+    .c_top_bar{display: none;}
+    div.T_wrap,
+    .c_view,
+    .c_scene_wrap,
+    .c_page{
+        height: 460px;
+    }
+
+}
