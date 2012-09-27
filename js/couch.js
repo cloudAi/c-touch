@@ -114,39 +114,85 @@ var Scene = {
     push_segue : function(key){
         if(!key) return;
         var self = this;
-        var action = {};
-        var plan = {};
-        var attr = 'left';
-        var flag = false;
 
         switch(key.point)
         {
             case 'L':
+                key.flag = false;
                 key.title_magic = true;
                 break;
             case 'R':
-                flag = true;
+                key.flag = true;
                 key.title_magic = true;
                 break;
             case 'T':
-                action.top = '-100%';
-                plan.top = '100%';
                 break;
             case 'B':
-                action.top = '100%';
-                plan.top = '-100%';
                 break;
         }
-        var des = '100%';
-        var val = (flag ? '':'-') + des;
-        action[attr] = val;
-        var val = (flag ? '':'-') + des;
 
-        key.action = action;
-        key.holder = key.holder || self.scene_holder;
-        key.mover  = key.holder;
-         
+        key.holder = self.scene_holder;
+
         self.segue_animate(key);
+    },
+
+    segue_animate : function(k, speed, type ){
+        if(!k) return;
+        var holder = k.holder;
+
+        //avoid the pushing repeat
+        if(holder.hasClass('c_view_pushing')) return;
+
+        var self = this;
+        var point  = k.point;
+        var root   = k.root;
+        var segue  = k.segue;
+        var mover  = k.mover  || k.holder;
+        var attr   = k.attr   || 'left';
+        var flag   = k.flag;
+
+        var action = {};
+        var init_action  = {};
+        var init_segue   = {};
+
+        var speed = speed || 300;
+
+        //init animate data;
+        // var width = segue.width();
+        var arg = 0.3;
+        width = 100;
+        action[attr] = (flag ? '':'-') + width + '%';
+        init_action[attr] = (flag ? '':'-') + width * arg + '%';
+        init_segue[attr]  = (flag ? '-':'') + width + '%';
+
+        holder.addClass('c_view_pushing c_view_push_' + point);
+
+        segue.css(init_segue).removeClass('c_view_hide').addClass('c_view_segue');
+
+        //view pushing action
+        var callback = function(){
+            console.log(k.point + ' push ok');
+            holder.removeClass('c_view_pushing c_view_push_' + point);
+            root.addClass('c_view_hide');
+            mover.removeAttr('style');
+            segue.removeClass('c_view_segue').removeAttr('style');
+        }
+
+        // if(0 && $.browser.webkit){
+        //     mover.addClass('c_view_webkit');
+        //     mover.css(action);
+        //     setTimeout(callback, 350);
+        // }
+
+        mover.css(init_action);
+        mover.animate(action, speed, callback);
+
+        //code for title magic move;
+        var t_magic = k.title_magic || 0;
+
+        if(t_magic){
+            self.segue_title_animate(k, speed);
+        }
     },
 
     segue_title_animate : function(k, speed, type){
@@ -186,62 +232,12 @@ var Scene = {
             t_holder.remove();
         }
 
-        var t_speed = 300;
+        var t_speed = speed;
 
         t_tit_text.animate({right : t_point + '10%'}, t_speed);
-        t_root.animate({ opacity : 0.1 }, t_speed / 2);
+        t_root.animate({ opacity : 0 }, t_speed / 2);
         t_segue.animate({left: '0%', opacity : 1 }, t_speed , t_call);
 
-    },
-
-
-    segue_animate : function(k, speed, type ){
-        if(!k) return;
-        var self = this;
-
-        var point = k.point;
-
-        var root  = k.root;
-        var segue = k.segue;
-        var mover = k.mover;
-        var holder = k.holder;
-
-        var action = k.action;
-
-        //avoid the pushing repeat
-        if(holder.hasClass('c_view_pushing')) return;
-
-        //code for title magic move;
-        var t_magic = k.title_magic || 0;
-
-        if(t_magic){
-            self.segue_title_animate(k);
-        }
-
-        //view pushing action
-        var callback = function(){
-            console.log(k.point + ' push ok');
-            holder.removeClass('c_view_pushing c_view_push_' + point);
-
-            root.addClass('c_view_hide');
-            segue.removeClass('c_view_segue');
-        
-            mover.removeAttr('style');
-        }
-
-        holder.addClass('c_view_pushing c_view_push_' + point);
-        segue.removeClass('c_view_hide');
-        segue.addClass('c_view_segue');
-
-        //mover.css('z-index', 1);
-
-        if(0 && $.browser.webkit){
-            mover.addClass('c_view_webkit');
-            mover.css(action);
-            setTimeout(callback, 350);
-        }else{
-            mover.animate(action, 300, callback);
-        }
     },
 
     // view shoud be an $dom object

@@ -1,4 +1,9 @@
 
+/* img */
+.c_title{
+    background: url(../img/tit_bg.png) repeat-x ;
+}
+
 /* couch */
 
 .c_view,
@@ -7,8 +12,13 @@
     width:320px;
     height: 440px;
 }
+
 .c_page{
+    height: 460px;
     background-color: #f8f8f8;
+    border: 3px solid #666;
+    border-radius: 6px;
+    margin-top: 30px;
 }
 
 .c_top_bar{
@@ -19,13 +29,13 @@
 }
 
 .c_scene_wrap{
-    background-color: rgba(155, 0 , 153, .7);
+    background-color: rgba(155, 0 , 153, 1);
     position: relative;
     overflow: hidden;
 }
 
 .c_scene_inner{
-    background-color: rgba(155, 200 , 53, .7);
+    background-color: rgba(155, 200 , 53, 1);
     position: absolute;
     left:0;
     width:100%;
@@ -35,14 +45,16 @@
 
 .c_view{
     background-color:#f09;
-    background-color: rgba(255, 0 , 153, .7);
+    background-color: rgba(255, 0 , 153, 1);
+    background: #fff;
     position: relative;
 }
 
 .c_view_segue{
     position: absolute;
     background-color:#f70;
-    background-color: rgba(255, 100 , 0, .7);
+    background-color: rgba(255, 100 , 0, 1);
+    background: #fff;
     left:0;
     top:0;
 }
@@ -51,13 +63,13 @@
     display: none;
 }
 
-.c_view_push_R .c_view_segue{ left:-100%; top:0; }
-.c_view_push_L .c_view_segue{ left:100%;  top:0; }
-.c_view_push_T .c_view_segue{ left:0; top:100%; }
-.c_view_push_B .c_view_segue{ left:0; top:-100%; }
+.c_view_push_R .c_view_segue1{ left:-100%; top:0; }
+.c_view_push_L .c_view_segue1{ left:100%;  top:0; }
+.c_view_push_T .c_view_segue1{ left:0; top:100%; }
+.c_view_push_B .c_view_segue1{ left:0; top:-100%; }
 
 .c_title{
-    height: 46px;
+    height: 44px;
     background-color: #f77;
     position: relative;
 }
@@ -79,10 +91,12 @@
 }
 .c_title .c_mid h2{
     padding:0;
-    padding-top: 10px;
+    padding-top: 12px;
     line-height: 24px;
     font-size: 18px;
     margin: 0;
+    color:#fff;
+    text-shadow:0px -1px 0px rgba(0,0,0,.3);
 }
 
 
@@ -90,7 +104,6 @@
 .c_scene_title,
 .c_scene_title .c_title_inner{
     position: absolute;
-    height: 46px;
     width:100%;
     top:0;
     left:0;
@@ -116,7 +129,7 @@
 }
 
 
-@media screen and (max-width: 770px) {
+@media screen and (max-width: 400px) {
     .c_top_bar{display: none;}
     div.T_wrap,
     .c_view,
@@ -124,5 +137,5 @@
     .c_page{
         height: 460px;
     }
-
+    .c_page{border: none; margin-top: 0;}
 }
