@@ -65,7 +65,7 @@ var Scene = {
                 root  : self.home_view,
                 segue : self.add_home_view
             }
-            self.slide_segue(key);
+            self.push_segue(key);
             return false;
         });
         var cancel_btn = $('.c_right a', self.add_home_view);
@@ -83,30 +83,47 @@ var Scene = {
 
 
     slide_segue : function(key){
-
         if(!key) return;
         var self = this;
-        var action = {};
-        var plan = {};
 
-        key.holder = key.holder || self.scene_holder;
+        var attr  = 'left';
+        var flag  =  false;
+
+
         switch(key.point)
         {
             case 'L':
+                break;
             case 'R':
-                action.left = '0%';
+                flag = true;
                 break;
             case 'T':
-                action.top = '0%';
-                key.mover  = key.segue;
+                attr = 'top';
                 break;
             case 'B':
-                action.top = '0%';
-                key.mover  = key.root;
+                attr = 'top';
+                flag  =  true;
                 break;
         }
 
-        key.action = action;
+        var a = flag ? '' : '-';
+        var i = flag ? '-' : '';
+        var w = '100%';
+        var s = '70%';
+
+        key.action   = {};
+        key.action_s = {};
+        key.action_i = {};
+
+        key.action[attr]   = '0%';
+        key.action_s[attr] = a + s;
+        key.action_i[attr] = i + w;
+
+        key.holder = key.holder || self.scene_holder;
+
+        key.mover = key.segue;
+
+        console.log(key.mover);
          
         self.segue_animate(key);
     },
@@ -115,23 +132,41 @@ var Scene = {
         if(!key) return;
         var self = this;
 
+        var attr  = 'left';
+        var flag  =  false;
+
         switch(key.point)
         {
             case 'L':
-                key.flag = false;
                 key.title_magic = true;
                 break;
             case 'R':
-                key.flag = true;
+                flag  =  true;
                 key.title_magic = true;
                 break;
             case 'T':
+                attr = 'top';
                 break;
             case 'B':
+                attr = 'top';
+                flag  =  true;
                 break;
         }
 
-        key.holder = self.scene_holder;
+        var a = flag ? '' : '-';
+        var i = flag ? '-' : '';
+        var w = '100%';
+        var s = '30%';
+
+        key.action   = {};
+        key.action_s = {};
+        key.action_i = {};
+
+        key.action[attr]   = a + w;
+        key.action_s[attr] = a + s;
+        key.action_i[attr] = i + w;
+
+        key.holder = key.holder || self.scene_holder;
 
         self.segue_animate(key);
     },
@@ -149,25 +184,17 @@ var Scene = {
         var segue  = k.segue;
         var mover  = k.mover  || k.holder;
         var attr   = k.attr   || 'left';
-        var flag   = k.flag;
 
-        var action = {};
-        var init_action  = {};
-        var init_segue   = {};
+        var action = k.action;
+
+        var action_s  = k.action_s;
+        var action_i  = k.action_i;
 
         var speed = speed || 300;
 
-        //init animate data;
-        // var width = segue.width();
-        var arg = 0.3;
-        width = 100;
-        action[attr] = (flag ? '':'-') + width + '%';
-        init_action[attr] = (flag ? '':'-') + width * arg + '%';
-        init_segue[attr]  = (flag ? '-':'') + width + '%';
-
         holder.addClass('c_view_pushing c_view_push_' + point);
 
-        segue.css(init_segue).removeClass('c_view_hide').addClass('c_view_segue');
+        segue.css(action_i).removeClass('c_view_hide').addClass('c_view_segue');
 
         //view pushing action
         var callback = function(){
@@ -184,7 +211,7 @@ var Scene = {
         //     setTimeout(callback, 350);
         // }
 
-        mover.css(init_action);
+        mover.css(action_s);
         mover.animate(action, speed, callback);
 
         //code for title magic move;
@@ -219,11 +246,7 @@ var Scene = {
         t_point = k.point == 'L' ? '' : '-';
 
         t_segue.css({
-            opacity : 0.1,
             left : t_point + '20%'
-        });
-        t_root.css({
-            opacity : 0.8
         });
 
         var t_tit_text = $('.c_mid:first', t_root);
@@ -234,8 +257,8 @@ var Scene = {
 
         var t_speed = speed;
 
+        t_root.fadeOut(t_speed / 2);
         t_tit_text.animate({right : t_point + '10%'}, t_speed);
-        t_root.animate({ opacity : 0 }, t_speed / 2);
         t_segue.animate({left: '0%', opacity : 1 }, t_speed , t_call);
 
     },
@@ -299,6 +322,11 @@ T.view = View;
 
 $(function(){
     Scene.init();
+
+    $('body').on('click', function(){
+        $('.c_page').fadeOut();
+    })
+
 })
 
 })(jQuery, appTouch);
