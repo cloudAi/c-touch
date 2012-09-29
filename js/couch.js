@@ -61,11 +61,11 @@ var Scene = {
 
         segue_btn.on('click', function(){
             var key = {
-                point : 'T',
+                point : 'B',
                 root  : self.home_view,
                 segue : self.add_home_view
             }
-            self.push_segue(key);
+            self.slide_segue(key);
             return false;
         });
         var cancel_btn = $('.c_right a', self.add_home_view);
@@ -76,11 +76,56 @@ var Scene = {
                 root  : self.add_home_view,
                 segue : self.home_view
             }
-            self.slide_segue(key);
+            self.flip_segue(key);
             return false;
         });
     },
 
+    flip_segue : function(key){
+        if(!key) return;
+        var self = this;
+
+        var attr  = 'left';
+        var flag  =  false;
+
+
+        switch(key.point)
+        {
+            case 'L':
+                break;
+            case 'R':
+                flag = true;
+                break;
+            case 'T':
+                attr = 'top';
+                break;
+            case 'B':
+                attr = 'top';
+                flag  =  true;
+                break;
+        }
+
+        var a = flag ? '' : '-';
+        var i = flag ? '-' : '';
+        var w = '0%';
+        var s = '20%';
+
+        key.action   = {};
+        key.action_s = {};
+        key.action_i = {};
+
+        key.action[attr]   = '100%';
+        key.action_s[attr] = a + s;
+        key.action_i[attr] = i + w;
+
+        key.holder = key.holder || self.scene_holder;
+
+        key.mover = key.root;
+
+        console.log(key.mover);
+         
+        self.segue_animate(key);
+    },
 
     slide_segue : function(key){
         if(!key) return;
@@ -109,7 +154,7 @@ var Scene = {
         var a = flag ? '' : '-';
         var i = flag ? '-' : '';
         var w = '100%';
-        var s = '70%';
+        var s = '80%';
 
         key.action   = {};
         key.action_s = {};
@@ -156,7 +201,7 @@ var Scene = {
         var a = flag ? '' : '-';
         var i = flag ? '-' : '';
         var w = '100%';
-        var s = '30%';
+        var s = '20%';
 
         key.action   = {};
         key.action_s = {};
@@ -246,7 +291,12 @@ var Scene = {
         t_point = k.point == 'L' ? '' : '-';
 
         t_segue.css({
+            opacity : 0.2,
             left : t_point + '20%'
+        });
+
+        t_root.css({
+            opacity : 0.8
         });
 
         var t_tit_text = $('.c_mid:first', t_root);
@@ -257,8 +307,8 @@ var Scene = {
 
         var t_speed = speed;
 
-        t_root.fadeOut(t_speed / 2);
-        t_tit_text.animate({right : t_point + '10%'}, t_speed);
+        t_root.animate({opacity : 0.1}, t_speed);
+        t_tit_text.animate({right : t_point + '20%'}, t_speed);
         t_segue.animate({left: '0%', opacity : 1 }, t_speed , t_call);
 
     },
@@ -322,11 +372,6 @@ T.view = View;
 
 $(function(){
     Scene.init();
-
-    $('body').on('click', function(){
-        $('.c_page').fadeOut();
-    })
-
 })
 
 })(jQuery, appTouch);
@@ -366,8 +411,6 @@ var ViewClass = {
         return subClass;
     }
 }
-
-
 
 var scene = new Scene();
 
